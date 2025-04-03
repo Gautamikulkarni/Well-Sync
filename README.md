@@ -29,28 +29,6 @@ Database: Firebase (for routine management)
 3️⃣ Routine Setter: AI generates a daily health routine, which you can modify and track anytime.
 4️⃣ NGO & Doctor Connections: The platform helps users connect with relevant organizations and specialists.
 
-📌 Installation & Setup
-Clone the repository:
-
-bash
-Copy
-Edit
-git clone https://github.com/your-repo/wellsync.git
-cd wellsync
-Install dependencies:
-
-bash
-Copy
-Edit
-pip install -r requirements.txt
-Run the Flask application:
-
-bash
-Copy
-Edit
-python chatbot.py
-Access the platform at: http://localhost:5000/
-
 💡 Future Enhancements
 ✅ Advanced AI Disease Prediction
 ✅ Enhanced Multilingual Capabilities
