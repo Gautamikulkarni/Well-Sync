@@ -1,0 +1,297 @@
+/* Base Styles */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #d09bdb; /* Lighter purple background for better contrast */
+  margin: 0;
+  padding: 20px;
+  color: #6a1b9a; /* Darker purple for better readability */
+  line-height: 1.6;
+}
+
+/* Main Container */
+.health-profile-container {
+  max-width: 900px; /* Slightly wider for better content fit */
+  margin: 20px auto;
+  background: rgb(253, 252, 252);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Headers */
+h1 {
+  color: #6a1b9a;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 2.2rem;
+}
+
+h2 {
+  color: #6a1b9a;
+  border-bottom: 2px solid #d1c4e9;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.subtitle {
+  color: #9575cd;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+/* Info Sections */
+.info-section {
+  background: #eee9e9;
+  padding: 25px;
+  border-radius: 10px;
+  margin: 25px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.info-content {
+  display: flex;
+  flex-wrap: wrap; /* Allows responsive wrapping */
+  justify-content: space-between;
+  gap: 15px; /* Better spacing between boxes */
+}
+
+.left-section,
+.right-section {
+  flex: 1;
+  min-width: 250px; /* Prevents squeezing on small screens */
+}
+
+/* Info Boxes */
+.info-box {
+  background: #e5c8ea;
+  padding: 15px;
+  margin: 8px 0;
+  border-radius: 8px;
+  font-weight: 600;
+  width: 100%; /* Full width of parent */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.info-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.label {
+  display: block;
+  font-size: 0.75rem;
+  color: #7e57c2;
+  margin-top: 5px;
+  font-weight: normal;
+}
+
+/* Progress Elements */
+.health-sections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.health-item {
+  background: white;
+  padding: 18px;
+  flex: 1 1 300px;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.health-item:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.progress-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #e1bee7;
+  color: #6a1b9a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.go-to-dash-button {
+  display: block;
+  margin: 20px auto; /* Centers the button horizontally */
+  padding: 12px 24px;
+  font-size: 18px;
+  color: white;
+  background-color: #a644bc;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.go-to-dash-button:hover {
+  background-color: #ac46d2;
+}
+
+/* Footer positioning */
+/* footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #f1f1f1;
+  text-align: center;
+  padding: 15px 0;
+  box-shadow: 0 -1px 5px rgba(0,0,0,0.1);
+} */
+
+/* Loading and Error States */
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #7e57c2;
+}
+
+.error {
+  background: #ffebee;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  margin: 30px auto;
+  max-width: 600px;
+  color: #c62828;
+}
+
+.error button {
+  background: #6a1b9a;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.2s;
+}
+
+.error button:hover {
+  background: #4a148c;
+}
+
+button{
+  padding: 10px 20px;
+  background-color: #ab07a3;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .health-profile-container {
+    padding: 20px;
+  }
+
+  .info-content {
+    flex-direction: column;
+  }
+
+  .health-item {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .info-box {
+    padding: 12px;
+  }
+
+  .progress-circle {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+
+
+  
+  /* Loading Spinner */
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+  }
+
+  .loading-spinner {
+    border: 4px solid #f3e5f5;
+    border-top: 4px solid #6a1b9a;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Error State */
+  .error-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #ffebee;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .error-container h2 {
+    color: #c62828;
+    margin-bottom: 15px;
+  }
+
+  .error-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .error-actions button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .error-actions button:first-child {
+    background: #6a1b9a;
+    color: white;
+  }
+
+  .error-actions button:last-child {
+    background: #e1bee7;
+    color: #4a148c;
+  }
+}

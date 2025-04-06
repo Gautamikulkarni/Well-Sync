@@ -1,0 +1,132 @@
+/* Chatbot Container */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Chatbot Interface */
+.chatbot-interface {
+    width: 350px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    transition: all 0.3s ease;
+}
+
+.chatbot-header {
+    background: #4CAF50;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chatbot-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.chatbot-header .close-chatbot {
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+.chatbot-messages {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    max-height: 400px;
+    background: #f9f9f9;
+}
+
+.chatbot-input-area {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #eee;
+    background: white;
+}
+
+.chatbot-input {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.chatbot-send {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.chatbot-send:hover {
+    background: #3e8e41;
+}
+
+/* Chatbot Icon */
+.chatbot-icon {
+    background: #4CAF50;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+
+.chatbot-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Chat Messages */
+.chatbot-message {
+    margin-bottom: 15px;
+    display: flex;
+}
+
+.bot-message {
+    justify-content: flex-start;
+}
+
+.user-message {
+    justify-content: flex-end;
+}
+
+.bot-message p, .user-message p {
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 80%;
+    margin: 5px 0;
+    word-wrap: break-word;
+}
+
+.bot-message p {
+    background: #f1f1f1;
+    border-radius: 18px 18px 18px 0;
+}
+
+.user-message p {
+    background: #4CAF50;
+    color: white;
+    border-radius: 18px 18px 0 18px;
+}
