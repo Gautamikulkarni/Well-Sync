@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <link rel="stylesheet" href="{{ url_for('static', filename='routine_result.css') }}">
+<link>
+    <h1>Your Personalized Routine</h1>
+    
+    <div class="card mb-4">
+        <div class="card-header">Health Analysis</div>
+        <div class="card-body">
+            <p>{{ health_analysis }}</p>
+        </div>
+    </div>
+    
+    <div class="card mb-4">
+        <div class="card-header">Recommendations</div>
+        <div class="card-body">
+            <p>{{ recommendations }}</p>
+        </div>
+    </div>
+    
+    <div class="card">
+        <div class="card-header">Daily Routine</div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for entry in routine %}
+                <li class="list-group-item">{{ entry }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <a href="{{ url_for('routine_generator') }}" class="btn btn-secondary mt-3">Generate Another</a>
+</div>
+
+<style>
+    .display-5 {
+        font-size: 2.2rem;
+        font-weight: 600;
+        background: linear-gradient(to right, var(--primary), var(--accent));
+        font-family:'Poppins', sans-serif;
+        -webkit-text-fill-color: transparent;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bg-light {
+        background-color: white !important;
+    }
+
+    .routine-item {
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        border-left: 4px solid var(--primary);
+        background:#fadeff;
+        border-radius: 6px;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+    }
+
+    .routine-item:hover {
+        transform: translateX(5px);
+        border-left: 4px solid var(--accent);
+    }
+
+    .routine-item::before {
+        content: "•";
+        color: var(--primary);
+        font-weight: bold;
+        margin-right: 1rem;
+    }
+</style>
+
+{% endblock %}  
+

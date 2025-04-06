@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical Specialist Finder</title>
+    <link rel="stylesheet" href="/static/connect_doc.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- City Selection View -->
+      <div class="view active-view" id="cityView">
+        <header>
+          <h1><i></i> Find Medical Specialists</h1>
+          <p>Select your city to view available specialists</p>
+        </header>
+
+        <div class="city-grid" id="cityGrid">
+          <!-- Cities will be dynamically inserted here -->
+        </div>
+
+        <div class="pagination">
+          <button id="prevBtn" disabled>
+            <i class="fas fa-chevron-left"></i> Previous
+          </button>
+          <span id="pageInfo">Page 1 of 1</span>
+          <button id="nextBtn">
+            Next <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/static/connect_doc.js"></script>
+  </body>
+</html>

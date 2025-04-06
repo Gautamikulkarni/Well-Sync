@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🩺 Health Reminder Scheduler</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='set_reminder.css') }}"/>
+</head>
+<!-- Header -->
+<!-- <header>
+   
+</header> -->
+
+
+<body>
+  <div class="container">
+    <h1>🩺 Health Reminder Scheduler</h1>
+    <form action="/add_event" method="POST">
+      <input type="text" name="event_name" placeholder="Event Name" required />
+      <select name="event_type" id="event_type" required onchange="toggleCustomType()">
+        <option value="Medicine">Medicine</option>
+        <option value="Exercise">Exercise</option>
+        <option value="Water">Water</option>
+        <option value="Other">Other</option>
+      </select>
+      <input type="text" name="custom_event_type" id="custom_event_type" placeholder="Custom Type" style="display: none;" />
+      <input type="date" name="event_start_date" required />
+      <input type="number" name="event_duration" placeholder="Duration (days)" required />
+      <input type="text" name="reminder_times" placeholder="Reminder Times (e.g. 14:30,18:00)" required />
+      <button type="submit">➕ Add Reminder</button>
+    </form>
+
+    <ul>
+      {% for event in events %}
+        <li>
+          {{ event.name }} ({{ event.event_type }}) - Starts: {{ event.start_date.strftime('%Y-%m-%d') }} | Duration: {{ event.duration_days }} days
+          <form action="{{ url_for('delete_event', index=loop.index0) }}" method="POST" style="display:inline;">
+            <button type="submit" class="delete-btn"> Delete</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Footer -->
+<!-- <footer class="bg-light mt-auto py-3 border-top">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0 text-muted">&copy; <span id="current-year">2025</span> WellSync. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <div class="footer-links">
+                    <a href="{{ url_for('terms') }}" class="text-decoration-none me-2">Terms of Service</a>
+                    <span class="text-muted me-2">|</span>
+                    <a href="{{ url_for('privacy') }}" class="text-decoration-none me-2">Privacy Policy</a>
+                    {% if 'user' in session %}
+                    <span class="text-muted me-2">|</span>
+                    <a href="{{ url_for('contact_page') }}" class="text-decoration-none">Contact Us</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</footer> -->
+
+
+  <script>
+    function toggleCustomType() {
+      const select = document.getElementById("event_type");
+      const customInput = document.getElementById("custom_event_type");
+      customInput.style.display = select.value === "Other" ? "block" : "none";
+    }
+  </script>
+</body>
+</html>

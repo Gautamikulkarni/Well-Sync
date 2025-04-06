@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us Section</title>
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='aboutus.css') }}"
+  />
+  
+  </head>
+  <body>
+    <div class="heading">
+        <h1>Well-Sync</h1>
+      </div>
+    <div class="container">
+      <div class="image-section">
+        <img src="/static/images/well-sync1.jpg" alt="About Us Image" />
+      </div>
+      <div class="text-section">
+        <h2>About Us</h2>
+        <h3>"Empowering rare lives through innovation."</h3>
+        <p>
+            At Well-Sync, we are a passionate team of innovators, developers, and healthcare enthusiasts on a mission to transform the way rare diseases are detected, managed, and supported. We recognize the unique challenges faced by individuals living with or at risk of rare diseases—delayed diagnoses, fragmented care, lack of awareness, and limited access to resources.
+            Our platform was born from the belief that proactive, personalized healthcare should be accessible to everyone, no matter how rare their condition may be. By combining technology with compassion, we've created a user-friendly, AI-driven platform that offers early risk assessments, customized health routines, access to expert consultations, and support from NGOs and caregivers—all in one place.
+            We’re not just building an app; we’re building a bridge between patients, healthcare providers, and communities that care.
+        </p>
+      </div>
+    </div>
+
+    <div class="vision-container">
+      <div class="text-section">
+        <h2>Our Vision</h2>
+        <h3>"A world where rare is supported, not sidelined, Where rare isn’t forgotten—it’s prioritized."</h3>
+        <p>
+            To create a world where no rare disease goes undetected, unsupported, or unmanaged—a world where technology empowers early diagnosis, fosters personalized care, and connects every individual to the support and resources they deserve.
+
+            We envision a future where people living with rare diseases are no longer isolated or underserved but are supported by a connected, informed, and compassionate digital ecosystem.
+
+            Through innovation, empathy, and collaboration, we strive to build a healthcare ecosystem that is inclusive, intelligent, and truly patient-centered.
+        </p>
+      </div>
+      <div class="vision-image">
+        <img src="/static/images/well-sync2.jpg" alt="Plant Image" />
+      </div>
+    </div>
+    <div>
+      <section class="team-section">
+        <h2>About Our Team</h2>
+        <p>
+            We are a passionate, multidisciplinary team driven by empathy and the desire to make a meaningful impact in the healthcare space. With backgrounds spanning technology, healthcare, and design, we bring together diverse perspectives to tackle real-world challenges. Our collaboration is rooted in a shared commitment to inclusivity, innovation, and creating solutions that truly serve those in need.<br />♥ "Empathy in action. Innovation at heart." ♥
+        </p>
+
+        <div class="team-container">
+          <div class="team-member">
+            <img src="/static/images/vaibhavi.jpg" alt="Vaibhavi Malche" />
+            <h3>Vaibhavi Malche</h3>
+           
+          </div>
+
+          <div class="team-member">
+            <img src="/static/images/tisha.jpg" alt="Tisha Kothari" />
+            <h3>Tisha Kothari</h3>
+            
+          </div>
+
+          <div class="team-member">
+            <img src="/static/images/gautami.jpg" alt="Gautami Kulkarni" />
+            <h3>Gautami Kulkarni</h3>
+            
+          </div>
+
+          <div class="team-member">
+            <img src="/static/images/ahilya.jpg" alt="Ahilya Kerle" />
+            <h3>Ahilya Kerle</h3>
+           
+          </div>
+        </div>
+        <div class="home-button-container">
+            <a href="{{ url_for('home') }}" class="home-button">Go to Home Page</a>
+          </div>
+      </section>
+    </div>
+    <div></div>
+  </body>
+</html>

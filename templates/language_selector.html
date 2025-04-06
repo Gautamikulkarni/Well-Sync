@@ -1,0 +1,7 @@
+<div class="language-selector">
+    <select id="languageSelector">
+        {% for code, name in config.SUPPORTED_LANGUAGES.items() %}
+            <option value="{{ code }}" {% if code == 'en' %}selected{% endif %}>{{ name }}</option>
+        {% endfor %}
+    </select>
+</div>

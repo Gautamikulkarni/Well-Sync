@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctor Search</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='doc_search.css') }}"
+    />
+  </head>
+  <body>
+    <section class="hero">
+      <h1>Search for <span>Doctors</span> and Specializations</h1>
+      <p>
+        Find the right specialist based on disease, location, hospital, or
+        expertise!
+      </p>
+      <div class="search-bar">
+        <input
+          type="text"
+          id="doctorSearch"
+          placeholder="Search for disease, specialization, location..."
+        />
+        <button onclick="searchDOC()">Search</button>
+      </div>
+    </section>
+
+    <section class="results">
+      <div class="job-cards"id="results-container">
+        <!-- Doctor results will be dynamically inserted here -->
+      </div>
+    </section>
+
+    <script
+      src="{{ url_for('static', filename='doc_search.js') }}"
+      type="module"
+    ></script>
+  </body>
+</html> 

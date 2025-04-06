@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Health Screening Quiz</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Screening Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/features.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+</head>
+<body>
+    <div class="quiz-container">
+        <header>
+            <h1>🩺 Comprehensive Health Screening</h1>
+            <p class="subtitle">Answer a few questions to assess potential health risks</p>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="form-container">
+            <!-- General Questions Section -->
+            <div class="form-section active" id="general-section">
+                <h2>General Health Questions</h2>
+                <p>Please answer these general health questions to help us determine which screening to provide.</p>
+                
+                <div class="question-group">
+                    <label for="fatigue">Do you often feel fatigued?</label>
+                    <select id="fatigue" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                
+                <div class="question-group">
+                    <label for="weight_change">Have you experienced unexplained weight changes?</label>
+                    <select id="weight_change" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                
+                <div class="question-group">
+                    <label for="sleep_issues">Do you have trouble sleeping or experience sleep disturbances?</label>
+                    <select id="sleep_issues" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                
+                <div class="question-group">
+                    <label for="skin_changes">Have you noticed changes in your skin, hair, or nails?</label>
+                    <select id="skin_changes" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                
+                <div class="question-group">
+                    <label for="headaches">Do you experience frequent headaches or dizziness?</label>
+                    <select id="headaches" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                
+                <button type="button" class="btn" id="submit-general">Submit General Questions</button>
+                
+                <div class="error-message" id="general-error"></div>
+                
+                <div class="loading" id="general-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Analyzing your responses...</p>
+                </div>
+            </div>
+            
+            <!-- Disease-Specific Questions Section -->
+            <div class="form-section" id="disease-section">
+                <h2 id="disease-title">Disease-Specific Questions</h2>
+                <p id="disease-description">Please answer these additional questions for a more accurate assessment.</p>
+                
+                <div id="disease-questions-container">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button type="button" class="btn btn-secondary" id="back-to-general">Back to General Questions</button>
+                    <button type="button" class="btn" id="submit-disease">Submit Screening</button>
+                </div>
+                
+                <div class="error-message" id="disease-error"></div>
+                
+                <div class="loading" id="disease-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Processing your screening results...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Section -->
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">Screening Results</h2>
+            
+            <div class="result-details">
+                <p><strong>Predicted Condition:</strong> <span id="result-disease">Not Available</span></p>
+                <p><strong>Risk Level:</strong> <span id="result-risk">Not Available</span></p>
+                <p><strong>Confidence Score:</strong> <span id="result-score">Not Available</span></p>
+            </div>
+            
+            <div class="recommendations">
+                <h3>Recommendations</h3>
+                <p id="result-recommendation">Based on your responses, we recommend consulting with a healthcare professional for further evaluation.</p>
+                <p id="result-next-steps">Consider scheduling an appointment with your primary care physician or a specialist in the relevant field.</p>
+            </div>
+            
+            <button type="button" class="btn btn-accent" id="start-new-screening" style="margin-top: 20px;">Start New Screening</button>
+        </div>
+    </div>
+ 
+    <script>
+        $(document).ready(function() {
+            let currentDisease = '';
+            let currentStage = 'general';
+            let generalAnswers = {};
+            
+            // Initialize the quiz
+            loadGeneralQuestions();
+            
+            // Load general questions
+            function loadGeneralQuestions() {
+                showLoading('general');
+                currentStage = 'general';
+                
+                $.get('/api/get_quiz_questions', function(response) {
+                    if(response.status === 'success') {
+                        renderQuestions(response.questions, 'general');
+                    }
+                }).fail(function() {
+                    showError('general', 'Failed to load questions. Please try again.');
+                }).always(function() {
+                    hideLoading('general');
+                });
+            }
+            
+            // Load disease-specific questions
+            function loadDiseaseQuestions(disease) {
+                showLoading('disease');
+                currentStage = 'disease';
+                currentDisease = disease;
+                
+                $.get(`/api/get_quiz_questions?disease=${encodeURIComponent(disease)}`, function(response) {
+                    if(response.status === 'success') {
+                        renderQuestions(response.questions, 'disease');
+                    }
+                }).fail(function() {
+                    showError('disease', 'Failed to load disease questions. Please try again.');
+                }).always(function() {
+                    hideLoading('disease');
+                });
+            }
+            
+            // Render questions to the form
+            function renderQuestions(questions, stage) {
+                const $form = $('#quiz-form');
+                $form.empty().html(`<h3>${stage === 'general' ? 'General Health Screening' : currentDisease + ' Screening'}</h3>`);
+                
+                questions.forEach((question, index) => {
+                    const fieldId = `q-${stage}-${index}`;
+                    $form.append(`
+                        <div class="question-group">
+                            <label for="${fieldId}">${question}</label>
+                            <select id="${fieldId}" name="${question}" required>
+                                <option value="" disabled selected>Select an option</option>
+                                ${getOptionsForQuestion(question)}
+                            </select>
+                        </div>
+                    `);
+                });
+                
+                // Add appropriate buttons
+                const submitBtn = `<button type="button" id="submit-quiz" class="btn">${
+                    stage === 'general' ? 'Continue to Specific Screening' : 'Get Results'
+                }</button>`;
+                
+                const backBtn = stage === 'disease' ? 
+                    '<button type="button" id="back-button" class="btn btn-secondary">Back to General Questions</button>' : 
+                    '';
+                    
+                $form.append(submitBtn + backBtn);
+                showSection(stage === 'general' ? 'general-section' : 'disease-section');
+                updateProgress(stage === 'general' ? 0 : 50);
+            }
+            
+            // Helper to determine options for different question types
+            function getOptionsForQuestion(question) {
+                if(question.includes('(A)')) {
+                    return question.match(/\(([A-Z])\) ([^(]+)/g)
+                        .map(opt => {
+                            const match = opt.match(/\(([A-Z])\) (.+)/);
+                            return `<option value="${match[1]}">${match[2].trim()}</option>`;
+                        }).join('');
+                }
+                return `
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                    <option value="Not sure">Not sure</option>
+                `;
+            }
+            
+            // Handle form submission
+            $(document).on('click', '#submit-quiz', function() {
+                const answers = {};
+                let isValid = true;
+                
+                $('#quiz-form select').each(function() {
+                    const $el = $(this);
+                    const answer = $el.val();
+                    
+                    if(!answer) {
+                        isValid = false;
+                        $el.addClass('is-invalid');
+                    } else {
+                        answers[$el.attr('name')] = answer;
+                        $el.removeClass('is-invalid');
+                    }
+                });
+                
+                if(!isValid) {
+                    showError(currentStage, 'Please answer all questions before submitting.');
+                    return;
+                }
+                
+                showLoading(currentStage);
+                hideError(currentStage);
+                
+                $.ajax({
+                    url: '/api/process_quiz',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ 
+                        answers: answers,
+                        stage: currentStage,
+                        disease: currentDisease
+                    }),
+                    success: function(response) {
+                        if(response.status === 'success') {
+                            if(currentStage === 'general') {
+                                generalAnswers = answers;
+                                loadDiseaseQuestions(response.result.disease);
+                            } else {
+                                showResults(response.result);
+                            }
+                        }
+                    },
+                    error: function(xhr) {
+                        showError(currentStage, 'Error processing your answers. Please try again.');
+                    },
+                    complete: function() {
+                        hideLoading(currentStage);
+                    }
+                });
+            });
+            
+            // Handle back button
+            $(document).on('click', '#back-button', function() {
+                loadGeneralQuestions();
+            });
+            
+            // Show results
+            function showResults(result) {
+                $('#quiz-form').hide();
+                
+                const riskClass = `risk-${result.risk_level.toLowerCase()}`;
+                $('#result-disease').text(result.disease);
+                $('#result-risk').html(result.risk_level).addClass(riskClass);
+                $('#result-recommendation').text(result.recommendation);
+                $('#result-container').show();
+                updateProgress(100);
+            }
+            
+            // Handle restart button
+            $(document).on('click', '#start-new-screening', function() {
+                $('#result-container').hide();
+                loadGeneralQuestions();
+                $('#quiz-form').show();
+                updateProgress(0);
+            });
+            
+            // Helper functions
+            function showLoading(section) {
+                $(`#${section}-loading`).show();
+            }
+            
+            function hideLoading(section) {
+                $(`#${section}-loading`).hide();
+            }
+            
+            function showError(section, message) {
+                $(`#${section}-error`).text(message).show();
+            }
+            
+            function hideError(section) {
+                $(`#${section}-error`).hide();
+            }
+            
+            function updateProgress(percent) {
+                $('#progress-bar').css('width', percent + '%');
+            }
+            
+            function showSection(sectionId) {
+                $('.form-section').removeClass('active');
+                $(`#${sectionId}`).addClass('active');
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+            }
+        });
+    </script>
+    </div>
+</body>
+</html>
