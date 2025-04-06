@@ -34,4 +34,5 @@ Database: Firebase (for routine management)
 ✅ Enhanced Multilingual Capabilities
 ✅ Mobile App Integration
 
+![Screenshot 2025-04-06 233024](https://github.com/user-attachments/assets/56255594-8e8a-4ce0-a52c-6202f217a3b5)
 
