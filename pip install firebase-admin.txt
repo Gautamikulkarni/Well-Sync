@@ -1,0 +1,87 @@
+pip install firebase-admin
+🔹 Steps to Integrate Firebase with Your App
+1️⃣ Install Firebase Admin SDK
+In your terminal, install the Firebase Admin SDK:
+
+bash
+Copy
+Edit
+pip install firebase-admin
+2️⃣ Setup Firebase in Your Project
+📌 (a) Create a Firebase Project
+Go to Firebase Console
+Click "Add Project", give it a name, and set it up.
+Enable Firestore Database (or Realtime Database).
+📌 (b) Download Firebase Admin SDK Credentials
+In Firebase Console, go to Project Settings → Service Accounts.
+Click "Generate new private key" and download the JSON file.
+Save it in your project directory as firebase_credentials.json.
+3️⃣ Configure Firebase in Your Python Code
+Add this at the beginning of your script:
+
+python
+Copy
+Edit
+import firebase_admin
+from firebase_admin import credentials, firestore
+
+# Initialize Firebase
+cred = credentials.Certificate("firebase_credentials.json")
+firebase_admin.initialize_app(cred)
+
+# Connect to Firestore
+db = firestore.client()
+4️⃣ Store User Queries & AI Responses in Firebase
+Modify your chat logic to save queries & responses:
+
+python
+Copy
+Edit
+if query:
+    st.write(f"🔍 Searching for: **{query}**")
+
+    # Translate query
+    translated_query = translate_text(query, dest_lang="en")
+
+    # AI response generation (RAG + Gemini)
+    response = rag_chain.invoke({"input": translated_query})
+    answer = response.get("answer", "⚠️ No answer found!")
+
+    # Translate AI response back to user's selected language
+    translated_answer = translate_text(answer, dest_lang=user_lang)
+
+    # Store query & response in Firebase Firestore
+    doc_ref = db.collection("chat_history").add({
+        "query": query,
+        "answer": translated_answer,
+        "language": user_lang,
+        "timestamp": firestore.SERVER_TIMESTAMP
+    })
+
+    # Store in Streamlit session state (for UI display)
+    st.session_state.chat_history.append({"query": query, "answer": translated_answer})
+
+    # Display the answer
+    st.write("### ✅ Answer:")
+    st.write(translated_answer)
+5️⃣ Retrieve & Display Chat History from Firebase
+If you want to fetch past chat history from Firebase and display it in your UI:
+
+python
+Copy
+Edit
+# Fetch chat history from Firebase Firestore
+chats = db.collection("chat_history").order_by("timestamp", direction=firestore.Query.DESCENDING).stream()
+
+st.write("## 📜 Past Chat History (Stored in Firebase)")
+for chat in chats:
+    chat_data = chat.to_dict()
+    with st.expander(f"💬 {chat_data['query']}"):
+        st.write(f"✅ **Answer:** {chat_data['answer']}")
+🎯 Final Thoughts
+✅ You successfully integrated Firebase Firestore into your Streamlit app!
+🔥 Now, all user queries & AI-generated responses will be stored & retrieved from Firebase.
+
+💡 Next Steps?
+
+If you prefer Firebase Realtime Database instead of Firestore, 

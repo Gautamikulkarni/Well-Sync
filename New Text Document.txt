@@ -1,0 +1,10 @@
+from google.cloud import translate_v2 as translate
+
+def translate_text(text, target_language="hi"):
+    client = translate.Client()
+    result = client.translate(text, target_language=target_language)
+    return result["translatedText"]
+
+text = "Hello, how are you?"
+translated_text = translate_text(text, "hi")  # Hindi
+print(translated_text)  # Output: "नमस्ते, आप कैसे हैं?"

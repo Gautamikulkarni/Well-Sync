@@ -1,0 +1,14 @@
+langchain
+langchain_community
+langchain-google-genai
+python-dotenv
+streamlit
+langchain_experimental
+sentence-transformers
+langchain_chroma
+langchainhub
+pypdf
+rapidocr-onnxruntime
+
+
+f3cbf8f7-0602-4e0e-8775-f3c62a10ba9e
