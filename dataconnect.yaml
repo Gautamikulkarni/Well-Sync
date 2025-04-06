@@ -1,0 +1,12 @@
+specVersion: "v1"
+serviceId: "well-sync"
+location: "asia-south1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "well-sync-realtime-db"
+      cloudSql:
+        instanceId: "well-sync-db"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

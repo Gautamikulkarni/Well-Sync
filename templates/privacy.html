@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy | Well-Sync</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <style>
+    /* Privacy Policy Specific Styles */
+    .privacy-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    }
+    
+    .privacy-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .privacy-header h1 {
+      color: #2c3e50;
+      margin-bottom: 0.5rem;
+    }
+    
+    .privacy-header p {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+    }
+    
+    .policy-section {
+      margin-bottom: 2rem;
+    }
+    
+    .policy-section h2 {
+      color: #3498db;
+      margin: 1.5rem 0 1rem;
+      font-size: 1.25rem;
+      border-bottom: 1px solid #ecf0f1;
+      padding-bottom: 0.5rem;
+    }
+    
+    .policy-section p, .policy-section ul {
+      line-height: 1.7;
+      color: #34495e;
+      margin-bottom: 1rem;
+    }
+    
+    .policy-section ul {
+      padding-left: 1.5rem;
+    }
+    
+    .policy-section li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .highlight {
+      background-color: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 6px;
+      margin: 1.5rem 0;
+      border-left: 4px solid #3498db;
+    }
+    
+    .back-to-home {
+      display: inline-block;
+      margin-top: 2rem;
+      color: #3498db;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .back-to-home:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      .privacy-container {
+        padding: 1.5rem;
+        margin: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  {% include 'navbar_public.html' %}
+
+  <div class="privacy-container">
+    <div class="privacy-header">
+      <h1>Privacy Policy</h1>
+      <p>Last Updated: March 30, 2025</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>1. Introduction</h2>
+      <p>Well-Sync ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our medical information platform.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>2. Information We Collect</h2>
+      <p>We may collect the following types of information:</p>
+      <ul>
+        <li><strong>Personal Information:</strong> Name, email address, and contact details when you register</li>
+        <li><strong>Health Information:</strong> Medical queries and related information you voluntarily provide</li>
+        <li><strong>Usage Data:</strong> Information about how you interact with our services</li>
+        <li><strong>Technical Data:</strong> IP address, browser type, and device information</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <h2>3. How We Use Your Information</h2>
+      <p>We use the information we collect to:</p>
+      <ul>
+        <li>Provide and maintain our service</li>
+        <li>Improve user experience</li>
+        <li>Respond to your medical queries</li>
+        <li>Communicate with you about our services</li>
+        <li>Ensure security and prevent fraud</li>
+      </ul>
+    </div>
+
+    <div class="highlight">
+      <h2>Medical Information Disclaimer</h2>
+      <p>All health-related information you provide is treated with strict confidentiality. However, Well-Sync is not a substitute for professional medical advice, diagnosis, or treatment.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>4. Data Security</h2>
+      <p>We implement appropriate technical and organizational measures to protect your personal information, including encryption and secure servers.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>5. Your Rights</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Access and request copies of your personal data</li>
+        <li>Request correction of inaccurate information</li>
+        <li>Request deletion of your personal data</li>
+        <li>Withdraw consent for data processing</li>
+      </ul>
+    </div>
+
+    <div class="policy-section">
+      <h2>6. Changes to This Policy</h2>
+      <p>We may update our Privacy Policy periodically. We will notify you of any changes by posting the new policy on this page.</p>
+    </div>
+
+    <div class="policy-section">
+      <h2>7. Contact Us</h2>
+      <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:privacy@well-sync.com">privacy@well-sync.com</a>.</p>
+    </div>
+
+    <a href="{{ url_for('home') }}" class="back-to-home">← Back to Home</a>
+  </div>
+
+  {% include 'footer.html' %}
+
+  <script src="{{ url_for('static', filename='scripts.js') }}" type="module"></script>
+</body>
+</html>

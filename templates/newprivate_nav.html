@@ -1,0 +1,19 @@
+<div class="navbar">
+    <img class="logo-img" src="{{ url_for('static', filename='images/ourLogo.png') }}" />
+    <span class="hamburger" onclick="openSidebar()">&#9776;</span>
+</div>
+
+<!-- Sidebar Navigation -->
+<div id="sidebar" class="sidebar">
+    <span class="closebtn" onclick="closeSidebar()">&times;</span>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('disp_profile') }}">View Profile</a>
+    <a href="{{ url_for('predict_and_cure') }}">Predict & Cure</a>
+    <a href="{{ url_for('routine_generator') }}">Set Routine</a>
+     <a href="{{ url_for('connect_with_doctors') }}">Connect with Experts</a> 
+    <a href="{{ url_for('connect_with_ngos') }}">NGO Support</a>
+    <a href="{{ url_for('reminders') }}">Reminders</a>
+    <!-- <a href="#chatbot">Chatbot</a> -->
+    <a href="#settings">Settings</a>
+    <a id="sign-out-btn" href="{{ url_for('logout') }}">Logout</a>
+</div>

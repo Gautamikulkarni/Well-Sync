@@ -1,0 +1,39 @@
+<div class="navbar">
+    <img class="logo-img" src="/static/images/ourLogo.png"/>
+    <span class="hamburger">&#9776;</span> <!-- Hamburger Icon -->
+    <div class="navbar-right" id="navbarRight">
+        <span class="closebtn">&times;</span>
+        <a href="{{ url_for('privatedash') }}">Dashboard</a>
+        <!-- Dropdown for News -->
+        <div class="dropdown">                       
+            <a class="dropbtn" id="dropBtn">Features</a>
+            <div class="dropdown-content">
+                <!-- <a href="#news1">Predict & Cure</a> -->
+                <a href="{{ url_for('predict_and_cure') }}">Predict & Cure</a>
+
+                <a href="{{ url_for('routine_generator') }}">Set Routine</a>
+                <!-- <a href="#news3">Add a reminder</a> -->
+                <a href="{{ url_for('reminders') }}">Add a reminder</a>
+
+
+            </div>
+        </div>
+        <a href="{{ url_for('AboutUs') }}">About Us</a>
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+</div>
+<!-- Somewhere near the end of dashboard.html -->
+<script>
+    document.getElementById("predictCureLink").addEventListener("click", function (e) {
+        e.preventDefault();  // Prevent anchor default
+        fetch("/predict-and-cure")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("predictCureSection").innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error loading Predict & Cure section:", error);
+            });
+    });
+    </script>
+    

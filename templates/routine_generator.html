@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+    
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #d099d9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+    }
+    
+    .container {
+        background-color: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+    }
+    
+    h2 {
+        color: #5a2d82;
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 600;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    label {
+        color: #5a2d82;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1px solid #e0c0e8;
+        border-radius: 8px;
+        background-color: #fadeff;
+        transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+        border-color: #b366d9;
+        box-shadow: 0 0 0 0.2rem rgba(210, 153, 217, 0.25);
+        background-color: white;
+    }
+    
+    .btn-primary {
+        background-color: #9a4dca;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 500;
+        width: 100%;
+        margin-top: 10px;
+        transition: all 0.3s;
+    }
+    
+    .btn-primary:hover {
+        background-color: #7e3dac;
+        transform: translateY(-2px);
+    }
+    
+    .btn-primary:active {
+        transform: translateY(0);
+    }
+</style>
+
+<div class="container mt-4">
+    <h1>Personalized Routine Generator</h1>
+    <form method="POST" action="{{ url_for('generate_routine') }}">
+        <div class="form-group">
+            <label for="wakeTime">Wake-Up Time</label>
+            <input type="time" class="form-control" id="wakeTime" name="wake_up_time" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="sleepTime">Bedtime</label>
+            <input type="time" class="form-control" id="sleepTime" name="sleep_time" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="sleepHours">Hours of Sleep (4-12)</label>
+            <input type="number" class="form-control" id="sleepHours" name="sleep_hours" min="4" max="12" value="7" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="workHours">Work/Study Hours (0-12)</label>
+            <input type="number" class="form-control" id="workHours" name="work_hours" min="0" max="12" value="8" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="exercise">Exercise Routine</label>
+            <select class="form-control" id="exercise" name="exercise" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="diet">Dietary Preference</label>
+            <select class="form-control" id="diet" name="diet" required>
+                <option value="Balanced">Balanced</option>
+                <option value="High Protein">High Protein</option>
+                <option value="Vegetarian">Vegetarian</option>
+                <option value="Vegan">Vegan</option>
+                <option value="Keto">Keto</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="stressLevel">Stress Level</label>
+            <select class="form-control" id="stressLevel" name="stress_level" required>
+                <option value="Low">Low</option>
+                <option value="Moderate">Moderate</option>
+                <option value="High">High</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="symptoms">Any Symptoms?</label>
+            <input type="text" class="form-control" id="symptoms" name="symptoms" placeholder="e.g., Headaches, Fatigue">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Generate Routine</button>
+    </form>
+</div>
+{% endblock %}

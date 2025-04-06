@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict & Cure - Comprehensive Health Screening</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #232223;
+    --secondary-color: #130f13;
+    --accent-color: #231620;
+    --light-color: #1f131e;
+    --dark-color: #231d21;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #d099d9;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: #fadeff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.2rem;
+        }
+        
+        .subtitle {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .form-container {
+            background-color: #fadeff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+        
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #da7fc0;
+            padding-bottom: 10px;
+        }
+        
+        .question-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        select, input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        select:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.2);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: #ee74cd;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #9bb7cc;
+        }
+        
+        .btn-accent {
+            background-color: var(--accent-color);
+        }
+        
+        .btn-accent:hover {
+            background-color: #ff6a45;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            color: var(--danger-color);
+            background-color: #f8d7da;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            margin: 15px 0;
+            display: none;
+        }
+        
+        .success-message {
+            color: var(--success-color);
+            background-color: #d4edda;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            margin: 15px 0;
+            display: none;
+        }
+        
+        .result-container {
+            background-color:#fadeff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .result-title {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .result-details {
+            margin-bottom: 20px;
+        }
+        
+        .risk-level {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .risk-low {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .risk-moderate {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .risk-high {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .recommendations {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🩺 Comprehensive Health Screening</h1>
+            <p class="subtitle">Answer a few questions to assess potential health risks</p>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="form-container">
+            <!-- General Questions Section -->
+            <div class="form-section active" id="general-section">
+                <h2>General Health Questions</h2>
+                <p>Please answer these general health questions to help us determine which screening to provide.</p>
+                
+                <div class="question-group">
+                    <label for="fatigue">Do you often feel fatigued?</label>
+                    <select id="fatigue" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                
+                <div class="question-group">
+                    <label for="weight_change">Have you experienced unexplained weight changes?</label>
+                    <select id="weight_change" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                
+                <div class="question-group">
+                    <label for="sleep_issues">Do you have trouble sleeping or experience sleep disturbances?</label>
+                    <select id="sleep_issues" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                
+                <div class="question-group">
+                    <label for="skin_changes">Have you noticed changes in your skin, hair, or nails?</label>
+                    <select id="skin_changes" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                
+                <div class="question-group">
+                    <label for="headaches">Do you experience frequent headaches or dizziness?</label>
+                    <select id="headaches" required>
+                        <option value="" disabled selected>Select an option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                
+                <button type="button" class="btn" id="submit-general">Submit General Questions</button>
+                
+                <div class="error-message" id="general-error"></div>
+                
+                <div class="loading" id="general-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Analyzing your responses...</p>
+                </div>
+            </div>
+            
+            <!-- Disease-Specific Questions Section -->
+            <div class="form-section" id="disease-section">
+                <h2 id="disease-title">Disease-Specific Questions</h2>
+                <p id="disease-description">Please answer these additional questions for a more accurate assessment.</p>
+                
+                <div id="disease-questions-container">
+                    <!-- Questions will be dynamically inserted here -->
+                </div>
+                
+                <div class="navigation-buttons">
+                    <button type="button" class="btn btn-secondary" id="back-to-general">Back to General Questions</button>
+                    <button type="button" class="btn" id="submit-disease">Submit Screening</button>
+                </div>
+                
+                <div class="error-message" id="disease-error"></div>
+                
+                <div class="loading" id="disease-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Processing your screening results...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Section -->
+        <div class="result-container" id="result-container">
+            <h2 class="result-title">Screening Results</h2>
+            
+            <div class="result-details">
+                <p><strong>Predicted Condition:</strong> <span id="result-disease">Not Available</span></p>
+                <p><strong>Risk Level:</strong> <span id="result-risk">Not Available</span></p>
+                <p><strong>Confidence Score:</strong> <span id="result-score">Not Available</span></p>
+            </div>
+            
+            <div class="recommendations">
+                <h3>Recommendations</h3>
+                <p id="result-recommendation">Based on your responses, we recommend consulting with a healthcare professional for further evaluation.</p>
+                <p id="result-next-steps">Consider scheduling an appointment with your primary care physician or a specialist in the relevant field.</p>
+            </div>
+            
+            <button type="button" class="btn btn-accent" id="start-new-screening" style="margin-top: 20px;">Start New Screening</button>
+        </div>
+    </div>
+    
+    <script>
+        $(document).ready(function() {
+            let currentDisease = '';
+            let generalAnswers = {};
+            
+            // Update progress bar
+            function updateProgress(percent) {
+                $('#progress-bar').css('width', percent + '%');
+            }
+            
+            // Show section and update progress
+            function showSection(sectionId, progress) {
+                $('.form-section').removeClass('active');
+                $('#' + sectionId).addClass('active');
+                updateProgress(progress);
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
+            }
+            
+            // Submit general questions
+            $('#submit-general').click(function() {
+                // Validate all fields
+                let isValid = true;
+                $('.form-section.active select[required]').each(function() {
+                    if (!$(this).val()) {
+                        isValid = false;
+                        $(this).css('border-color', 'var(--danger-color)');
+                    } else {
+                        $(this).css('border-color', '#ddd');
+                    }
+                });
+                
+                if (!isValid) {
+                    $('#general-error').text('Please answer all questions before submitting.').show();
+                    return;
+                }
+                
+                $('#general-error').hide();
+                $('#general-loading').show();
+                
+                // Collect general answers
+                generalAnswers = {
+                    "Do you often feel fatigued?": $('#fatigue').val(),
+                    "Have you experienced unexplained weight changes?": $('#weight_change').val(),
+                    "Do you have trouble sleeping or experience sleep disturbances?": $('#sleep_issues').val(),
+                    "Have you noticed changes in your skin, hair, or nails?": $('#skin_changes').val(),
+                    "Do you experience frequent headaches or dizziness?": $('#headaches').val()
+                };
+                
+                // Simulate API call (replace with actual AJAX call)
+                setTimeout(function() {
+                    $('#general-loading').hide();
+                    
+                    // Process answers to determine disease (this would come from your backend)
+                    const possibleDiseases = {
+                        "LADA": 0,
+                        "Hashimoto's Disease": 0,
+                        "Exploding Head Syndrome (EHS)": 0,
+                        "Wernicke-Korsakoff Syndrome (WKS)": 0,
+                        "Heart Disease": 0
+                    };
+                    
+                    // Simple scoring based on answers
+                    if (generalAnswers["Do you often feel fatigued?"] === "Yes") {
+                        possibleDiseases["LADA"] += 1;
+                        possibleDiseases["Hashimoto's Disease"] += 1;
+                        possibleDiseases["Heart Disease"] += 1;
+                    }
+                    if (generalAnswers["Have you experienced unexplained weight changes?"] === "Yes") {
+                        possibleDiseases["LADA"] += 1;
+                        possibleDiseases["Hashimoto's Disease"] += 1;
+                    }
+                    if (generalAnswers["Do you have trouble sleeping or experience sleep disturbances?"] === "Yes") {
+                        possibleDiseases["Exploding Head Syndrome (EHS)"] += 1;
+                    }
+                    if (generalAnswers["Do you experience frequent headaches or dizziness?"] === "Yes") {
+                        possibleDiseases["Wernicke-Korsakoff Syndrome (WKS)"] += 1;
+                        possibleDiseases["Heart Disease"] += 1;
+                    }
+                    if (generalAnswers["Have you noticed changes in your skin, hair, or nails?"] === "Yes") {
+                        possibleDiseases["Hashimoto's Disease"] += 1;
+                    }
+                    
+                    // Determine disease with highest score
+                    let maxScore = 0;
+                    currentDisease = '';
+                    for (const [disease, score] of Object.entries(possibleDiseases)) {
+                        if (score > maxScore) {
+                            maxScore = score;
+                            currentDisease = disease;
+                        }
+                    }
+                    
+                    if (currentDisease && maxScore > 0) {
+                        loadDiseaseQuestions(currentDisease);
+                    } else {
+                        $('#general-error').text('Unable to determine a specific condition to screen for based on your answers.').show();
+                    }
+                }, 1500);
+            });
+            
+            // Load disease-specific questions
+            function loadDiseaseQuestions(disease) {
+                $('#disease-title').text(disease + ' Screening Questions');
+                $('#disease-description').text('Please answer these specific questions to help us assess your risk for ' + disease);
+                
+                // Clear previous questions
+                $('#disease-questions-container').empty();
+                
+                // Add questions based on disease (in a real app, this would come from your backend)
+                const diseaseQuestions = {
+                    "LADA": [
+                        "Do you experience excessive thirst and frequent urination?",
+                        "Have you lost weight unintentionally?",
+                        "What is your diet like? (A) High in carbohydrates (B) Balanced (C) Low-carb/Keto",
+                        "How often do you engage in physical activity? (A) Daily (B) A few times a week (C) Rarely",
+                        "How frequently do you experience high blood sugar spikes? (A) Often (B) Occasionally (C) Rarely",
+                        "Do you often feel fatigued or weak? (A) Very frequently (B) Sometimes (C) Rarely",
+                        "Do you have a family history of diabetes? (A) Yes (B) No (C) Not sure"
+                    ],
+                    "Hashimoto's Disease": [
+                        "Do you often feel tired or sluggish?",
+                        "Have you experienced unexpected weight gain?",
+                        "Do you have dry skin or brittle hair?",
+                        "Do you frequently feel cold, even in warm environments?",
+                        "Have you noticed swelling in your neck (goiter)?",
+                        "How often do you feel fatigued? (A) Every day (B) A few times a week (C) Occasionally (D) Rarely",
+                        "Have you noticed hair loss or thinning? (A) Yes, a lot (B) Some, but not much (C) Very little (D) Not at all",
+                        "How would you describe your sensitivity to cold? (A) I feel cold all the time (B) I feel colder than others (C) Sometimes, but not always (D) No, I feel fine",
+                        "How is your metabolism? (A) Very slow, I gain weight easily (B) Somewhat slow (C) Normal (D) Fast, I don't gain weight easily",
+                        "How often do you experience brain fog or forgetfulness? (A) Daily (B) A few times a week (C) Rarely (D) Never"
+                    ],
+                    "Exploding Head Syndrome (EHS)": [
+                        "Do you hear sudden loud noises when falling asleep or waking up?",
+                        "Do these episodes cause fear or anxiety?",
+                        "Do you have trouble falling asleep due to these noises?",
+                        "What type of sound do you usually hear? (A) Explosions (B) Loud bangs (C) Electrical zaps or buzzing (D) Other",
+                        "Do you experience any physical sensations along with these noises? (A) A jolt or muscle twitch (B) A feeling of pressure in the head (C) Racing heartbeat (D) None of the above",
+                        "How does this condition affect your sleep? (A) I wake up suddenly but fall back asleep quickly (B) It makes it difficult to fall back asleep (C) It causes long-term sleep disturbances (D) It does not affect my sleep significantly",
+                        "Have you noticed any triggers that cause these episodes? (A) Stress or anxiety (B) Fatigue or sleep deprivation (C) Consuming caffeine before bed (D) No specific triggers",
+                        "How often do you experience loud noises during sleep? (A) Almost every night (B) A few times a week (C) Occasionally (D) Rarely"
+                    ],
+                    "Wernicke-Korsakoff Syndrome (WKS)": [
+                        "Do you have a history of alcohol use or malnutrition?",
+                        "Have you experienced memory loss?",
+                        "Do you experience confusion or disorientation?",
+                        "How often do you have difficulty walking steadily? (A) Daily (B) A few times a week (C) Rarely (D) Never",
+                        "How often do you experience dizziness? (A) Daily (B) Weekly (C) Rarely (D) Never",
+                        "Do you have difficulty remembering recent events? (A) Always (B) Often (C) Sometimes (D) Never",
+                        "Do you experience vision problems such as double vision or drooping eyelids?",
+                        "Have you noticed a significant decrease in concentration or focus?"
+                    ],
+                    "Heart Disease": [
+                        "Do you experience chest pain or discomfort?",
+                        "Do you have difficulty breathing or shortness of breath?",
+                        "How often do you experience shortness of breath? (A) During mild activity (B) During intense activity (C) Rarely (D) Never",
+                        "Have you ever experienced heart palpitations?",
+                        "Do you have a family history of heart disease? (A) Yes (B) No (C) Not sure",
+                        "Do you experience swelling in your legs, ankles, or feet?",
+                        "Have you ever been diagnosed with high blood pressure or high cholesterol?"
+                    ]
+                };
+                
+                const questions = diseaseQuestions[disease] || [];
+                
+                questions.forEach((question, index) => {
+                    const questionId = 'q' + index;
+                    const questionHtml = `
+                        <div class="question-group">
+                            <label for="${questionId}">${question}</label>
+                            <select id="${questionId}" name="${question}" required>
+                                <option value="" disabled selected>Select an option</option>
+                                ${question.includes('(A)') ? `
+                                    ${getOptionsFromQuestionText(question)}
+                                ` : `
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="Not sure">Not sure</option>
+                                `}
+                            </select>
+                        </div>
+                    `;
+                    $('#disease-questions-container').append(questionHtml);
+                });
+                
+                showSection('disease-section', 50);
+            };
+            
+            // Helper function to extract options from question text
+            function getOptionsFromQuestionText(question) {
+                const options = [];
+                const optionRegex = /\(([A-Z])\) ([^\(]+)/g;
+                let match;
+                
+                while ((match = optionRegex.exec(question)) !== null) {
+                    options.push(`<option value="${match[1]}">${match[2].trim()}</option>`);
+                }
+                
+                return options.join('');
+            }
+            
+            // Back to general questions
+            $('#back-to-general').click(function() {
+                showSection('general-section', 0);
+            });
+            
+            // Submit disease-specific questions
+            $('#submit-disease').click(function() {
+                // Validate all fields
+                let isValid = true;
+                $('#disease-section select[required]').each(function() {
+                    if (!$(this).val()) {
+                        isValid = false;
+                        $(this).css('border-color', 'var(--danger-color)');
+                    } else {
+                        $(this).css('border-color', '#ddd');
+                    }
+                });
+                
+                if (!isValid) {
+                    $('#disease-error').text('Please answer all questions before submitting.').show();
+                    return;
+                }
+                
+                $('#disease-error').hide();
+                $('#disease-loading').show();
+                
+                // Collect disease-specific answers
+                const diseaseAnswers = {};
+                $('#disease-section select').each(function() {
+                    diseaseAnswers[$(this).attr('name')] = $(this).val();
+                });
+                
+                // Simulate API call (replace with actual AJAX call)
+                setTimeout(function() {
+                    $('#disease-loading').hide();
+                    
+                    // Calculate risk score (this would come from your backend)
+                    let riskScore = 0;
+                    Object.values(diseaseAnswers).forEach(answer => {
+                        if (answer === "Yes" || answer === "A") riskScore += 2;
+                        else if (answer === "No") riskScore += 0;
+                        else riskScore += 1;
+                    });
+                    
+                    // Determine risk level
+                    let riskLevel, riskClass;
+                    if (riskScore <= 3) {
+                        riskLevel = "Low";
+                        riskClass = "risk-low";
+                    } else if (riskScore <= 6) {
+                        riskLevel = "Moderate";
+                        riskClass = "risk-moderate";
+                    } else {
+                        riskLevel = "High";
+                        riskClass = "risk-high";
+                    }
+                    
+                    // Calculate confidence score (simplified for demo)
+                    const confidenceScore = Math.min(100, Math.max(30, Math.floor(riskScore * 10)));
+                    
+                    // Display results
+                    $('#result-disease').text(currentDisease);
+                    $('#result-risk').html(`${riskLevel} <span class="risk-level ${riskClass}">${riskLevel} Risk</span>`);
+                    $('#result-score').text(confidenceScore + '%');
+                    
+                    // Generate recommendations
+                    let recommendation = "Based on your responses, we recommend consulting with a healthcare professional for further evaluation.";
+                    let nextSteps = "Consider scheduling an appointment with your primary care physician.";
+                    
+                    if (currentDisease === "LADA") {
+                        nextSteps = "Please consult with an endocrinologist for blood sugar testing and potential diabetes screening.";
+                    } else if (currentDisease === "Hashimoto's Disease") {
+                        nextSteps = "A thyroid function test would be appropriate. Consider seeing an endocrinologist.";
+                    } else if (currentDisease === "Exploding Head Syndrome (EHS)") {
+                        nextSteps = "A sleep specialist can help evaluate your symptoms and recommend appropriate management strategies.";
+                    } else if (currentDisease === "Wernicke-Korsakoff Syndrome (WKS)") {
+                        nextSteps = "Immediate medical evaluation is recommended, especially if you have a history of alcohol use or nutritional deficiencies.";
+                    } else if (currentDisease === "Heart Disease") {
+                        nextSteps = "A cardiologist can perform appropriate tests to evaluate your cardiovascular health.";
+                    }
+                    
+                    $('#result-recommendation').text(recommendation);
+                    $('#result-next-steps').text(nextSteps);
+                    
+                    showSection('result-container', 100);
+                    $('#result-container').show();
+                }, 1500);
+            });
+            
+            // Start new screening
+            $('#start-new-screening').click(function() {
+                // Reset form
+                $('select').val('');
+                $('#general-error, #disease-error').hide();
+                $('#result-container').hide();
+                currentDisease = '';
+                generalAnswers = {};
+                
+                showSection('general-section', 0);
+            });
+        });
+    </script>
+</body>
+</html>

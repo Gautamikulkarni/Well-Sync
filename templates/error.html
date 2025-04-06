@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+    
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #d099d9;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+    }
+    
+    .error-container {
+        background-color: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 600px;
+        text-align: center;
+    }
+    
+    h1 {
+        color: #5a2d82;
+        margin-bottom: 20px;
+    }
+    
+    .btn-primary {
+        background-color: #9a4dca;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 500;
+        margin-top: 20px;
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+    }
+</style>
+
+<div class="error-container">
+    <h1>Error</h1>
+    <p>{{ message }}</p>
+    <a href="{{ url_for('routine_generator') }}" class="btn-primary">Return to Generator</a>
+</div>
+{% endblock %}

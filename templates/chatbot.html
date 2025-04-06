@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='home.css') }}"
+    />
+    <!-- Add Font Awesome for chat icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <title>Flask Template</title>
+    <style>
+      /* Chatbot styles */
+      .chatbot-container {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          z-index: 1000;
+      }
+      
+      .chatbot-icon {
+          width: 60px;
+          height: 60px;
+          background-color: #4285f4;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+          transition: all 0.3s ease;
+      }
+      
+      .chatbot-icon:hover {
+          transform: scale(1.1);
+      }
+      
+      .chatbot-icon i {
+          color: white;
+          font-size: 24px;
+      }
+      
+      .chatbot-interface {
+          width: 350px;
+          height: 500px;
+          background-color: white;
+          border-radius: 10px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          display: none;
+          flex-direction: column;
+          overflow: hidden;
+      }
+      
+      .chatbot-header {
+          background-color: #4285f4;
+          color: white;
+          padding: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+      
+      .chatbot-messages {
+          flex-grow: 1;
+          padding: 15px;
+          overflow-y: auto;
+          background-color: #f9f9f9;
+      }
+      
+      .chatbot-input-area {
+          display: flex;
+          padding: 10px;
+          border-top: 1px solid #eee;
+          background-color: white;
+      }
+      
+      .chatbot-input {
+          flex-grow: 1;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 20px;
+          outline: none;
+      }
+      
+      .chatbot-send {
+          background-color: #4285f4;
+          color: white;
+          border: none;
+          border-radius: 20px;
+          padding: 10px 15px;
+          margin-left: 10px;
+          cursor: pointer;
+      }
+      
+      .message {
+          margin-bottom: 15px;
+          max-width: 80%;
+          padding: 10px 15px;
+          border-radius: 18px;
+          word-wrap: break-word;
+      }
+      
+      .bot-message {
+          background-color: #e3f2fd;
+          align-self: flex-start;
+          border-bottom-left-radius: 5px;
+      }
+      
+      .user-message {
+          background-color: #4285f4;
+          color: white;
+          align-self: flex-end;
+          margin-left: auto;
+          border-bottom-right-radius: 5px;
+      }
+      
+      .typing-indicator {
+          display: inline-block;
+          padding: 10px 15px;
+          background-color: #e3f2fd;
+          border-radius: 18px;
+          margin-bottom: 15px;
+      }
+      
+      .typing-dot {
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: #666;
+          margin: 0 2px;
+          animation: typingAnimation 1.4s infinite ease-in-out;
+      }
+      
+      .typing-dot:nth-child(1) {
+          animation-delay: 0s;
+      }
+      
+      .typing-dot:nth-child(2) {
+          animation-delay: 0.2s;
+      }
+      
+      .typing-dot:nth-child(3) {
+          animation-delay: 0.4s;
+      }
+      
+      @keyframes typingAnimation {
+          0%, 60%, 100% { transform: translateY(0); }
+          30% { transform: translateY(-5px); }
+      }
+    </style>
+  </head>
+
+  <body>
+    {% include 'navbar_public.html' %}
+
+    <div class="homepage-content">
+      <div class="left-section">
+          <h1>Well-Sync</h1>
+          <p>Empowering Rare Lives, One Insight at a Time</p>
+          <button class="button_home">Get Started</button>
+      </div>
+      <div class="right-section"></div> <!-- Image Background -->
+    </div>
+    <br><br><br>
+    
+    <section class="feature" id="feature">
+      <div class="heading">
+        <h2>Our Features</h2>
+      </div>
+      <div class="menu-container">
+       <!-- Box 1 -->
+       <div class="box">
+        <div class="box-img">
+          <img src="{{ url_for('static', filename='images/img1.jpg') }}" alt="Feature Image">
+        </div>
+        <h2>Predict & Cure</h2>
+        <h3>Predict, Prevent, Protect.</h3>
+        <div class="cta-buttons">
+          <a href="#donate" class="btn">Get Started</a>
+          </div>
+        
+      </div>
+        
+        <!-- Box 2 -->
+        <div class="box">
+          <div class="box-img">
+            <img src="/static/images/img4.jpg" alt="" />
+          </div>
+          <h2>Set Routine</h2>
+          <h3>Personalized Routines for<br> Better Care.</h3>
+          <div class="cta-buttons">
+            <a href="#donate" class="btn">Get Started</a>
+            </div>  
+            
+        </div>
+        <!-- Box 3 -->
+        <div class="box">
+            <div class="box-img">
+              <img src="/static/images/img5.jpg" alt="" />
+            </div>
+            <h2>Connect with NGOs</h2>
+            <h3>Connecting You to Support<br>That Cares.</h3>
+            <div class="cta-buttons">
+                <a href="#donate" class="btn">Donate Now</a>
+                </div>
+            
+          </div>
+        <!-- Box 4 -->
+        <div class="box">
+            <div class="box-img">
+              <img src="/static/images/img6.jpg" alt="" />
+            </div>
+            <h2>Connect with Specialists</h2>
+            <h3>Expert Care, Just a Tap Away.</h3>
+            <div class="cta-buttons">
+              <a href="#donate" class="btn">Donate Now</a>
+              </div>
+            
+          </div>
+      </div>
+    </section>
+
+    <br><br><br>
+    
+    <!-- Chatbot Container -->
+    <div class="chatbot-container">
+        <div class="chatbot-interface">
+            <div class="chatbot-header">
+                <h3>Medical Assistant</h3>
+                <i class="fas fa-times close-chatbot"></i>
+            </div>
+            <div class="chatbot-messages" id="chat-messages">
+                <!-- Messages will appear here -->
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" class="chatbot-input" id="chat-input" placeholder="Type your medical question...">
+                <button class="chatbot-send" id="send-message"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <div class="chatbot-icon" id="chatbot-icon">
+            <i class="fas fa-comment-medical"></i>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <script
+      src="{{ url_for('static', filename='scripts.js') }}"
+      type="module"
+    ></script>
+    
+    <!-- Chatbot JavaScript -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const chatbotIcon = document.getElementById('chatbot-icon');
+          const chatbotInterface = document.querySelector('.chatbot-interface');
+          const closeChatbot = document.querySelector('.close-chatbot');
+          const sendButton = document.getElementById('send-message');
+          const chatInput = document.getElementById('chat-input');
+          const chatMessages = document.getElementById('chat-messages');
+          
+          // Toggle chat interface
+          chatbotIcon.addEventListener('click', function() {
+              const isVisible = chatbotInterface.style.display === 'flex';
+              chatbotInterface.style.display = isVisible ? 'none' : 'flex';
+              
+              // Add welcome message if first time opening
+              if (!isVisible && chatMessages.children.length === 0) {
+                  addBotMessage("Hello! I'm your Well-Sync Medical Assistant. How can I help you today?");
+              }
+          });
+          
+          // Close chat interface
+          closeChatbot.addEventListener('click', function() {
+              chatbotInterface.style.display = 'none';
+          });
+          
+          // Add a message to the chat
+          function addMessage(text, isUser) {
+              const messageDiv = document.createElement('div');
+              messageDiv.className = isUser ? 'message user-message' : 'message bot-message';
+              messageDiv.textContent = text;
+              chatMessages.appendChild(messageDiv);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+          
+          // Add bot message
+          function addBotMessage(text) {
+              addMessage(text, false);
+          }
+          
+          // Add user message
+          function addUserMessage(text) {
+              addMessage(text, true);
+          }
+          
+          // Show typing indicator
+          function showTypingIndicator() {
+              const typingDiv = document.createElement('div');
+              typingDiv.className = 'typing-indicator';
+              typingDiv.id = 'typing-indicator';
+              typingDiv.innerHTML = `
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+              `;
+              chatMessages.appendChild(typingDiv);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+          
+          // Hide typing indicator
+          function hideTypingIndicator() {
+              const typingIndicator = document.getElementById('typing-indicator');
+              if (typingIndicator) {
+                  typingIndicator.remove();
+              }
+          }
+          
+          // Send message to backend
+          async function sendMessageToBackend(message) {
+              try {
+                  showTypingIndicator();
+                  
+                  const response = await fetch('/process-medical-query', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                          query: message,
+                          language: 'en' // You can make this dynamic based on user selection
+                      })
+                  });
+                  
+                  const data = await response.json();
+                  hideTypingIndicator();
+                  
+                  if (data.answer) {
+                      addBotMessage(data.answer);
+                  } else {
+                      addBotMessage("Sorry, I couldn't process your request. Please try again.");
+                  }
+              } catch (error) {
+                  hideTypingIndicator();
+                  addBotMessage("There was an error connecting to the medical assistant. Please try again later.");
+                  console.error('Error:', error);
+              }
+          }
+          
+          // Handle sending a message
+          function handleSendMessage() {
+              const message = chatInput.value.trim();
+              if (message) {
+                  addUserMessage(message);
+                  chatInput.value = '';
+                  sendMessageToBackend(message);
+              }
+          }
+          
+          // Send message on button click
+          sendButton.addEventListener('click', handleSendMessage);
+          
+          // Send message on Enter key
+          chatInput.addEventListener('keypress', function(e) {
+              if (e.key === 'Enter') {
+                  handleSendMessage();
+              }
+          });
+      });
+    </script>
+  </body>
+</html>

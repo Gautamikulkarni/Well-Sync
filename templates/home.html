@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='home.css') }}"
+    />
+    <!-- Add Font Awesome for chat icon -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <title>Flask Template</title>
+    <style>
+      /* Chatbot styles */
+      .chatbot-container {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          z-index: 1000;
+      }
+      
+      .chatbot-icon {
+          width: 60px;
+          height: 60px;
+          background-color:#bd4bcf;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+          transition: all 0.3s ease;
+      }
+      
+      .chatbot-icon:hover {
+          transform: scale(1.1);
+      }
+      
+      .chatbot-icon i {
+          color: white;
+          font-size: 24px;
+      }
+      
+      .chatbot-interface {
+          width: 350px;
+          height: 500px;
+          background-color: white;
+          border-radius: 10px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          display: none;
+          flex-direction: column;
+          overflow: hidden;
+      }
+      
+      .chatbot-header {
+          background-color: #95498c;
+          color: white;
+          padding: 15px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+      
+      .chatbot-messages {
+          flex-grow: 1;
+          padding: 15px;
+          overflow-y: auto;
+          background-color: #f9f9f9;
+      }
+      
+      .chatbot-input-area {
+          display: flex;
+          padding: 10px;
+          border-top: 1px solid #e29bca;
+          background-color: white;
+      }
+      
+      .chatbot-input {
+          flex-grow: 1;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 20px;
+          outline: none;
+      }
+      
+      .chatbot-send {
+          background-color: #e072bf;
+          color: white;
+          border: none;
+          border-radius: 20px;
+          padding: 10px 15px;
+          margin-left: 10px;
+          cursor: pointer;
+      }
+      
+      .message {
+          margin-bottom: 15px;
+          max-width: 80%;
+          padding: 10px 15px;
+          border-radius: 18px;
+          word-wrap: break-word;
+      }
+      
+      .bot-message {
+          background-color: #e3f2fd;
+          align-self: flex-start;
+          border-bottom-left-radius: 5px;
+      }
+      
+      .user-message {
+          background-color: #9c5a9d;
+          color: white;
+          align-self: flex-end;
+          margin-left: auto;
+          border-bottom-right-radius: 5px;
+      }
+      
+      .typing-indicator {
+          display: inline-block;
+          padding: 10px 15px;
+          background-color: #efbce5;
+          border-radius: 18px;
+          margin-bottom: 15px;
+      }
+      
+      .typing-dot {
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: #666;
+          margin: 0 2px;
+          animation: typingAnimation 1.4s infinite ease-in-out;
+      }
+      
+      .typing-dot:nth-child(1) {
+          animation-delay: 0s;
+      }
+      
+      .typing-dot:nth-child(2) {
+          animation-delay: 0.2s;
+      }
+      
+      .typing-dot:nth-child(3) {
+          animation-delay: 0.4s;
+      }
+      
+      @keyframes typingAnimation {
+          0%, 60%, 100% { transform: translateY(0); }
+          30% { transform: translateY(-5px); }
+      }
+      
+      /* Video Background Styles */
+      .video-container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: -1;
+      }
+ .sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #bd4bcf;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+.sidebar a {
+  padding: 12px 20px;
+  text-decoration: none;
+  font-size: 20px;
+  font: bolder;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #d9a9e0;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  font-size: 25px;
+  color: var(--white);
+  cursor: pointer;
+}
+
+/* Hamburger Menu Icon */
+.menu-icon {
+  font-size: 30px;
+  cursor: pointer;
+  padding: 15px;
+  position: absolute;
+  top: 2px;
+  left: 10px;
+  color: var(--primary-dark);
+  transition: 0.3s;
+}
+
+.menu-icon:hover {
+  color: var(--primary-dark);
+}
+    </style>
+  </head>
+
+  <body>
+    {% include 'navbar_public.html' %}
+
+    <!-- <div class="video-background-container">
+      <video autoplay muted loop playsinline class="background-video">
+        <source src="{{ url_for('static', filename='videos/background.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="video-overlay"> -->
+
+    <!-- Sidebar and Menu Icon -->
+    <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+    <div id="sidebar" class="sidebar">
+      <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()"
+        >✖</a
+      >
+      <a href="{{ url_for('privatedash') }}">Dashboard</a>
+      <a href="{{ url_for('disp_profile') }}">View Profile</a>
+      <a href="#">Settings</a>
+      <a href="#">Logout</a>
+    </div>
+   
+    <div class="homepage-content">
+      <div class="left-section">
+          <h1>Well-Sync</h1>
+          <p>Empowering Rare Lives, One Insight at a Time</p>
+          <a href="{{ url_for('home') }}">
+            <!-- <button class="button_home">Get Started</button> -->
+            <button id="getStartedBtn"><a href="{{ url_for('index') }}">Get Started</a>
+            </button>
+
+        </a>
+      </div>
+      <div class="right-section"></div> 
+    </div>
+    <!-- <br><br><br> -->
+    
+    <section class="feature" id="feature">
+      <div class="heading">
+        <h2>Our Features</h2>
+      </div>
+      <div class="menu-container">
+        <!-- Box 1 -->
+        <div class="box">
+          <div class="box-img">
+            <img src="{{ url_for('static', filename='images/img1.jpg') }}" alt="Feature Image">
+          </div>
+          <h2>Predict & Cure</h2>
+          <h3>Predict, Prevent, Protect.</h3>
+          <div class="cta-buttons">
+            <a href="{{ url_for('predict_and_cure') }}" class="nav-link">Get Started</a>
+          </div>
+        </div>
+        
+        <!-- Box 2 -->
+        <div class="box">
+          <div class="box-img">
+            <img src="/static/images/img4.jpg" alt="" />
+          </div>
+          <h2>Set Routine</h2>
+          <h3>Personalized Routines for<br> Better Care.</h3>
+          <div class="cta-buttons">
+            <a href="{{ url_for('routine_generator') }}" class="btn-get-started">
+              Get Started
+            </a>
+          </div>  
+        </div>
+        
+        <!-- Box 3 -->
+        <div class="box">
+          <div class="box-img">
+            <img src="/static/images/img5.jpg" alt="" />
+          </div>
+          <h2>Connect with NGOs</h2>
+          <h3>Connecting You to Support<br>That Cares.</h3>
+          <div class="cta-buttons">
+            <button onclick="window.location.href='/connect_with_ngos'">Connect Now</button>
+          </div>
+        </div>
+        
+        <!-- Box 4 -->
+        <div class="box">
+          <div class="box-img">
+            <img src="/static/images/img6.jpg" alt="" />
+          </div>
+          <h2>Connect with Specialists</h2>
+          <h3>Expert Care, Just a Tap Away.</h3>
+          <div class="cta-buttons">
+            <a href="/connect_with_doctors" class="btn">Connect Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <head>
+        <title>Medical Specialist Finder</title>
+        <link rel="stylesheet" href="/static/connect_doc.css" />
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+      </head>
+      <body>
+        <div class="container">
+          <!-- City Selection View -->
+          <div class="view active-view" id="cityView">
+            <header>
+              <h1><i></i> Find Medical Specialists</h1>
+              <p>Select your city to view available specialists</p>
+            </header>
+            <div class="city-grid" id="cityGrid">
+              <!-- Cities will be dynamically inserted here -->
+            </div>
+            <div class="pagination">
+              <button id="prevBtn" disabled>
+                <i class="fas fa-chevron-left"></i> Previous
+              </button>
+              <span id="pageInfo">Page 1 of 1</span>
+              <button id="nextBtn">
+                Next <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <script src="/static/connect_doc.js"></script>
+      </body>
+      
+    </section>
+    <!-- <br><br><br> -->
+    <section class="reviews-section">
+      <h2>What Our Users Say</h2>
+  
+      <!-- First Row (Scrolling Right, Only Images) -->
+      <div class="reviews-container">
+          <div class="reviews-wrapper reverse">
+              <div class="image-card"><img src="/static/images/user1.png" alt="User 1"></div>
+              <div class="image-card"><img src="/static/images/user2.png" alt="User 1"></div>
+              <div class="image-card"><img src="/static/images/user4.jpg" alt="User 1"></div>
+              <div class="image-card"><img src="/static/images/user5.png" alt="User 1"></div>
+              <div class="image-card"><img src="/static/images/user7.png" alt="User 1"></div>
+              <div class="image-card"><img src="/static/images/user6.png" alt="User 1"></div>
+              <!-- Duplicate for seamless loop -->
+              <div class="image-card"><img src="/static/images/user1.png" alt="User 1"></div>
+              <div class="image-card"><img src="/static/images/user2.png" alt="User 1"></div>
+              <div class="image-card"><img src="/static/images/user4.jpg" alt="User 1"></div>
+              <div class="image-card"><img src="/static/images/user5.png" alt="User 1"></div>
+              <div class="image-card"><img src="/static/images/user7.png" alt="User 1"></div>
+              <div class="image-card"><img src="/static/images/user6.png" alt="User 1"></div>
+          </div>
+      </div>
+  
+      <br><br>
+  
+      <!-- Second Row (Scrolling Left, Only Text Reviews) -->
+      <div class="reviews-container">
+          <div class="reviews-wrapper">
+              <div class="review-card"><h4> Life-Changing Support for Rare Conditions
+              </h4><h6>"Finally, an app that understands the struggles of living with a rare disease! The predictive quiz helped me assess my risk, and the personalized routines have made a real difference in managing my condition. The AI-driven insights and expert consultations are a game changer!"</h6>
+              Shrinivasa Shetty</div>
+              <div class="review-card"><h4> The All-in-One Health Companion</h4><h6>"From AI-driven risk evaluation to expert guidance, this app does it all! I feel more in control of my health, thanks to its tailored approach. Highly recommend it to anyone affected by a rare disease!"</h6>
+              Priya Goenka</div>
+              <div class="review-card"><h4>Innovative and Easy to Use</h4><h6>"I love how simple yet powerful this app is. The risk assessment tool gave me early insights, and the routine planning have improved my daily life. Unlike other platforms, this one truly focuses on the user's needs!"</h6>
+              Ariana Dsouza</div>
+              <div class="review-card"><h4>The Chatbot is Super Helpful!</h4><h6>The chatbot Features answers all my questions instantly and gives me reliable health tips without having to search endlessly online. It's like having a knowledgeable companion available 24/7!</h6>
+              Henna Sheikh</div>
+              <div class="review-card"><h4>Expert Consultations at My Fingertips</h4><h6>
+                  "Finding the right specialists for rare diseases is difficult, but this app made it easy! I was able to connect with an expert directly through the platform, saving me time and stress. The consultation was insightful and gave me a clear direction for managing my condition."</h6>
+              Riya Mehta</div>
+              <div class="review-card"><h4> Smart Reminders Keep Me on Track</h4><h6>"Managing my condition used to be overwhelming, but the smart reminders have made a huge difference. Whether it's taking medication, tracking symptoms, or following my routine, I never miss anything important now. This feature alone makes the app worth it!</h6>
+              Paresh Sippi</div>
+              <!-- Duplicate for seamless loop -->
+              <div class="review-card"><h4> Life-Changing Support for Rare Conditions
+              </h4><h6>"Finally, an app that understands the struggles of living with a rare disease! The predictive quiz helped me assess my risk, and the personalized routines have made a real difference in managing my condition. The AI-driven insights and expert consultations are a game changer!"</h6>
+              Shrinivasa Shetty</div>
+              <div class="review-card"><h4> The All-in-One Health Companion</h4><h6>"From AI-driven risk evaluation to expert guidance, this app does it all! I feel more in control of my health, thanks to its tailored approach. Highly recommend it to anyone affected by a rare disease!"</h6>
+              Priya Goenka</div>
+              <div class="review-card"><h4>Innovative and Easy to Use</h4><h6>"I love how simple yet powerful this app is. The risk assessment tool gave me early insights, and the routine planning have improved my daily life. Unlike other platforms, this one truly focuses on the user's needs!"</h6>
+              Ariana Dsouza</div>
+              <div class="review-card"><h4>The Chatbot is Super Helpful!</h4><h6>The chatbot Features answers all my questions instantly and gives me reliable health tips without having to search endlessly online. It's like having a knowledgeable companion available 24/7!</h6>
+              Henna Sheikh</div>
+              <div class="review-card"><h4>Expert Consultations at My Fingertips</h4><h6>
+                  "Finding the right specialists for rare diseases is difficult, but this app made it easy! I was able to connect with an expert directly through the platform, saving me time and stress. The consultation was insightful and gave me a clear direction for managing my condition."</h6>
+              Riya Mehta</div>
+              <div class="review-card"><h4> Smart Reminders Keep Me on Track</h4><h6>"Managing my condition used to be overwhelming, but the smart reminders have made a huge difference. Whether it's taking medication, tracking symptoms, or following my routine, I never miss anything important now. This feature alone makes the app worth it!</h6></div>
+      </div>
+  </section>
+    <!-- <br><br><br> -->
+    <section><div class="faq-section">
+      <h2>Frequently Asked Questions</h2>
+      <p>Find answers to common questions about our services.</p>
+      
+      <div class="faq-item">
+          <div class="faq-question">Who can use this app? <span class="faq-icon">+</span></div>
+          <div class="faq-answer">Anyone who wants to assess their risk for rare diseases, manage an existing condition, or access expert advice and support resources can use this app.</div>
+      </div>
+      
+      <div class="faq-item">
+          <div class="faq-question">How does the AI-powered risk assessment work?<span class="faq-icon">+</span></div>
+          <div class="faq-answer">Our AI analyzes your responses to a predictive quiz, using medical insights to determine potential risk levels and suggest next steps.</div>
+      </div>
+    
+      <div class="faq-item">
+          <div class="faq-question">How does the ‘Build Your Routine’ feature work?<span class="faq-icon">+</span></div>
+          <div class="faq-answer">This feature allows users to create custom health routines with reminders for medication, exercises, diet plans, and lifestyle modifications tailored to their condition.
+          </div>
+          
+      </div>
+    
+      <div class="faq-item">
+              <div class="faq-question">Can I consult medical specialists through the app?<span class="faq-icon">+</span></div>
+              <div class="faq-answer">No, We just provide you with the data of specialists for certain diseases residing in specific areas.</div>
+      </div>
+    
+          <div class="faq-item">
+              <div class="faq-question">How do smart reminders help in managing my condition?<span class="faq-icon">+</span></div>
+              <div class="faq-answer">Smart reminders notify you about important tasks like medication intake, doctor appointments, symptom tracking, and lifestyle goals.</div>
+          </div>
+    
+    
+          <div class="faq-item">
+              <div class="faq-question">Is my personal health data safe?<span class="faq-icon">+</span></div>
+              <div class="faq-answer">Yes! We follow strict security measures to ensure that your data is encrypted and never shared without your consent.</div>
+          </div>
+    
+          <div class="faq-item">
+              <div class="faq-question">What should I do if I face technical issues?<span class="faq-icon">+</span></div>
+              <div class="faq-answer">You can reach out to our support team via the "Contact Us" section on the website.</div>
+          </div>
+    </div>
+    </section>
+
+    <!-- <br><br><br> -->
+    
+    <section class="youtube-section">
+      <div class="video-wrapper">
+        <h2 class="video-title">Watch: Managing Rare Diseases</h2>
+        <iframe 
+          src="https://www.youtube.com/embed/NgAhYr2RX8g?si=16CnfeBI2FiKKo2B"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </section>
+    
+    
+    
+
+    <section class="contact-section">
+      <h2>Contact Us</h2>
+      
+              <p><i class="phone"></i> call us at: +91 1888888888</p>
+              <p><i class="email"></i> mail us at: hackathondone@gmail.com</p>
+              <p><i class="instagram"></i> connect us at: well_sync_instagram.com</p>
+    </section>
+    
+    <!-- <section  class="video-section">
+      <div class="video-container">
+        <h2>Watch: Managing Rare Diseases</h2>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/NgAhYr2RX8g?si=16CnfeBI2FiKKo2B" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+
+    </section> -->
+  
+    
+    <!-- Chatbot Container -->
+    <div class="chatbot-container">
+        <div class="chatbot-interface">
+            <div class="chatbot-header">
+                <h3>Medical Assistant</h3>
+                <i class="fas fa-times close-chatbot"></i>
+            </div>
+            <div class="chatbot-messages" id="chat-messages">
+                <!-- Messages will appear here -->
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" class="chatbot-input" id="chat-input" placeholder="Type your medical question...">
+                <button class="chatbot-send" id="send-message">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        <div class="chatbot-icon" id="chatbot-icon">
+            <i class="fas fa-comment-medical"></i>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <script src="{{ url_for('static', filename='scripts.js') }}" type="module"></script>
+    
+    <!-- Chatbot JavaScript -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const chatbotIcon = document.getElementById('chatbot-icon');
+          const chatbotInterface = document.querySelector('.chatbot-interface');
+          const closeChatbot = document.querySelector('.close-chatbot');
+          const sendButton = document.getElementById('send-message');
+          const chatInput = document.getElementById('chat-input');
+          const chatMessages = document.getElementById('chat-messages');
+          
+          // Toggle chat interface
+          chatbotIcon.addEventListener('click', function() {
+              const isVisible = chatbotInterface.style.display === 'flex';
+              chatbotInterface.style.display = isVisible ? 'none' : 'flex';
+              
+              // Add welcome message if first time opening
+              if (!isVisible && chatMessages.children.length === 0) {
+                  addBotMessage("Hello! I'm your Well-Sync Medical Assistant. How can I help you today?");
+              }
+          });
+          
+          // Close chat interface
+          closeChatbot.addEventListener('click', function() {
+              chatbotInterface.style.display = 'none';
+          });
+          
+          // Add a message to the chat
+          function addMessage(text, isUser) {
+              const messageDiv = document.createElement('div');
+              messageDiv.className = isUser ? 'message user-message' : 'message bot-message';
+              messageDiv.textContent = text;
+              chatMessages.appendChild(messageDiv);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+          
+          // Add bot message
+          function addBotMessage(text) {
+              addMessage(text, false);
+          }
+          
+          // Add user message
+          function addUserMessage(text) {
+              addMessage(text, true);
+          }
+          
+          // Show typing indicator
+          function showTypingIndicator() {
+              const typingDiv = document.createElement('div');
+              typingDiv.className = 'typing-indicator';
+              typingDiv.id = 'typing-indicator';
+              typingDiv.innerHTML = `
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+              `;
+              chatMessages.appendChild(typingDiv);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+          }
+          
+          // Hide typing indicator
+          function hideTypingIndicator() {
+              const typingIndicator = document.getElementById('typing-indicator');
+              if (typingIndicator) {
+                  typingIndicator.remove();
+              }
+          }
+          
+          // Send message to backend
+          async function sendMessageToBackend(message) {
+              try {
+                  showTypingIndicator();
+                  
+                  const response = await fetch('/process-medical-query', {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({
+                          query: message,
+                          language: 'en'
+                      })
+                  });
+                  
+                  const data = await response.json();
+                  hideTypingIndicator();
+                  
+                  if (data.answer) {
+                      addBotMessage(data.answer);
+                  } else {
+                      addBotMessage("Sorry, I couldn't process your request. Please try again.");
+                  }
+              } catch (error) {
+                  hideTypingIndicator();
+                  addBotMessage("There was an error connecting to the medical assistant. Please try again later.");
+                  console.error('Error:', error);
+              }
+          }
+          
+          // Handle sending a message
+          function handleSendMessage() {
+              const message = chatInput.value.trim();
+              if (message) {
+                  addUserMessage(message);
+                  chatInput.value = '';
+                  sendMessageToBackend(message);
+              }
+          }
+          
+          // Send message on button click
+          sendButton.addEventListener('click', handleSendMessage);
+          
+          // Send message on Enter key
+          chatInput.addEventListener('keypress', function(e) {
+              if (e.key === 'Enter') {
+                  handleSendMessage();
+              }
+          });
+      });
+    </script>
+  </body>
+</html>

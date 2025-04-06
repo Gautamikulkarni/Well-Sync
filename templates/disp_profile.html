@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Health Profile</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='disp_profile.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <head>
+      <!-- Add this to your profile.html and disp_profile.html -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  </head>
+  <body>
+    <div class="health-profile-container">
+      <h1>Your Health Profile!</h1>
+
+      <!-- General Information -->
+      <div class="info-section">
+        <h2>General Information</h2>
+        <div class="info-content">
+          <div class="left-section">
+            <div class="info-box" id="medical_id">Medical ID: Loading...</div>
+            <div class="info-box" id="age">Age: Loading...</div>
+            <div class="info-box" id="height">Height: Loading...</div>
+            <div class="info-box" id="weight">Weight: Loading...</div>
+            <div class="info-box" id="city">City: Loading...</div>
+          </div>
+          <div class="right-section">
+            <div class="info-box" id="name">Name: Loading...</div>
+            <div class="info-box" id="phone_number">Phone: Loading...</div>
+            <div class="info-box" id="diet">Diet: Loading...</div>
+            <div class="info-box" id="blood_group">Blood Group: Loading...</div>
+            <div class="info-box" id="gender">Gender: Loading...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Medical Information -->
+      <div class="info-section">
+        <h2>Medical Information</h2>
+        <div class="info-content">
+          <div class="left-section">
+            <div class="info-box" id="past_illnesses">
+              Past Illnesses: Loading...
+            </div>
+            <div class="info-box" id="family_history">
+              Family History: Loading...
+            </div>
+            <div class="info-box" id="current_medications">
+              Current Medications: Loading...
+            </div>
+            <div class="info-box" id="exercise_frequency">
+              Exercise: Loading...
+            </div>
+            <div class="info-box" id="physical_disabilities">
+              Physical Disabilities: Loading...
+            </div>
+          </div>
+          <div class="right-section">
+            <div class="info-box" id="known_allergies">
+              Allergies: Loading...
+            </div>
+            <div class="info-box" id="surgery_hospitalizations">
+              Surgeries: Loading...
+            </div>
+            <div class="info-box" id="smoking">Smoking: Loading...</div>
+            <div class="info-box" id="alcohol_consumption">
+              Alcohol: Loading...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Progress Section -->
+      <div class="health-sections">
+        <div class="health-item">
+          <span class="progress-circle" id="main-health-progress">0%</span>
+          Main Health Information
+        </div>
+        <div class="health-item">
+          <span class="progress-circle" id="lab-test-progress">0%</span>
+          Lab Test Interpretation
+        </div>
+      </div>
+
+      <footer class="profile-footer">   
+           <button id="go-to-dash-btn" class="go-to-dash-button"> <a href="{{ url_for('privatedash') }}" >
+            Go to Dashboard
+          </a></button>
+      </footer>
+    </div>
+
+    <script>
+      const phone_number = "{{ phone_number }}";
+      const url = `/get_latest_profile?phone_number=${phone_number}`;
+    </script>
+    <script src="{{ url_for('static', filename='disp_profile.js') }}"></script>
+  </body>
+</html>

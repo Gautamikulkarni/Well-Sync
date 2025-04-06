@@ -1,0 +1,17 @@
+<!-- templates/header.html -->
+<header style="background-color: #aa4dc2; padding: 10px;">
+    <nav class="navbar navbar-expand-lg navbar-light justify-content-between">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="WellSync Logo" style="height: 40px;">
+        </a>
+        <div class="d-flex">
+          <a class="nav-link text-white" href="#">Dashboard</a>
+          <a class="nav-link text-white" href="#">Features</a>
+          <a class="nav-link text-white" href="#">About Us</a>
+          <a class="nav-link text-white" href="{{ url_for('login') }}">Login</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+  
