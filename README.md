@@ -1,7 +1,5 @@
 🌿 WellSync - AI-Powered Rare Disease Healthcare Platform
-Empowering Lives Through AI-driven Healthcare Solutions
-
-(Optional - Add an eye-catching banner image)
+Empowering Lives Through AI-driven Healthcare Solution
 
 🚀 About WellSync
 WellSync is an AI-powered healthcare platform dedicated to assisting individuals with rare diseases. With a suite of intelligent features, WellSync leverages Gemini AI, RAG-based retrieval, and multilingual support to provide accurate medical insights, predictive analysis, and personalized care.
